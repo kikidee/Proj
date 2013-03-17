@@ -1,6 +1,8 @@
 % Function to calculate volumetric surface strain from a
 % prolate source at depth
 
+%fun
+
 %--------------------------------------------------
 
 %variables:
