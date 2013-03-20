@@ -5,7 +5,7 @@ close all;
 % Inputs
 %=========================================================================
 eps=1e-10;   % small number
-z0=.51;                % center depth (positive)
+z0=0.51;                % center depth (positive)
 P= 12850;                %a value of 500 gives 25MPa for mu=5GPa, for 10 GPa divide value by 10 and result is MPa for 5GPa divide by 20
                       % excess pressure, mu*10^(-5) Pa
 a =0.5;                % major axis, km
@@ -81,8 +81,9 @@ tang_yang      = tang_disp(101,:)./x(101,:);
 %diffvertyang   = diff(uz(101,101:201))./diff(x(101,101:201));       
 rad_yang       = diff(tang_disp(101,101:201))./diff(x(101,101:201));
 vert_yang      = (nu/(1-nu))*(rad_yang+tang_yang(101:200));			% vertical strain from strain components			
-vol_yangedit   = (tang_yang(101:200)+rad_yang+vert_yang);
-vol_yang       = (tang_yang(101:200)+rad_yang);
+vol_ymogi      = (tang_yang(101:200)+rad_yang+vert_yang);           % mogi equation for volumetric strain
+vol_yang       = (1-2*nu/1-nu)*(tang_yang(101:200)+rad_yang);
+vol_yangedit   = (tang_yang(101:200)+rad_yang);					% edited yang equation 
 %plot(x(101,101:199),vol_yang(1:99))
 
 tang_com       = ustrain*100./(dist/1000);
@@ -93,14 +94,31 @@ tang_comneg    = ustrainneg*100./(distneg/1000);
 rad_comneg     = diff(ustrainneg*100)./diff((distneg/1000));
 vol_comneg     = (1-2*nu/1-nu)*(tang_comneg(1:100)+rad_comneg);
 
+%hold on
+%plot(dist,ustrain, 'green')
+%plot(x(101,:)*1000, tang_disp(101,:)/100)
 %=========================================================================
 % Plot Volumetric Strain
 %=========================================================================
 
 %plot(dist,volstrain, 'red')
-plot(dist/1000,volstrain*100000, 'green')
+plot(dist,volstrain, 'green')
 hold on
-plot(dist(1:100)/1000,vol_com, 'black')
-plot(x(101,101:200), vol_yangedit, 'red')
-plot(x(101,101:200), vol_yang, 'blue')
+%plot(dist(1:100),vol_com/100000, 'cyan')
+plot(x(101,101:200)*1000, vol_yang/100000, 'blue')
+plot(x(101,101:200)*1000, vol_ymogi/100000, 'red')
+plot(x(101,101:200)*1000, vol_yangedit/100000, 'black')
 
+% Set Graph Title in fontsize
+title('Volumetric Strain Equation Comparison', 'FontSize', 12, 'FontName', 'Arial');
+
+% Set Y Axis
+ylabel('Strain Units(SI)', 'FontSize', 12)
+xlabel('Distance (meters)', 'FontSize', 12)
+
+%legend command
+line_1_name = 'Numerical,';
+line_2_name = 'Bonaccorso';
+line_3_name = 'Mogi';
+line_4_name = 'Edited Bonaccorso';
+legend(line_1_name, line_2_name, line_3_name, line_4_name, 'Location','NorthEast')
