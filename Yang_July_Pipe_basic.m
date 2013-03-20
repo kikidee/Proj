@@ -5,7 +5,7 @@ close all;
 % Inputs
 %=========================================================================
 eps=1e-10;   % small number
-z0=0.51;                % center depth (positive)
+z0=1;                % center depth (positive)
 P= 12850;                %a value of 500 gives 25MPa for mu=5GPa, for 10 GPa divide value by 10 and result is MPa for 5GPa divide by 20
                       % excess pressure, mu*10^(-5) Pa
 a =0.5;                % major axis, km
@@ -63,7 +63,7 @@ tang_disp = sqrt(ux.^2+(ux').^2); %inserted by jo to quantify horiz displacement
 %=========================================================================
 % Call Comsol data
 %=========================================================================
-alldatarray    = load('bench_july_2.txt','-ascii');             % exported data for negative pressure (-645.5Mpa)
+alldatarray    = load('benchpipe_depth.txt','-ascii');             % exported data for negative pressure (-645.5Mpa)
 alldatarrayneg = load('july_bench_negative.txt','-ascii');   % exported data for positive pressure (645.5Mpa)
 dist           = alldatarray(:,1);
 distneg        = alldatarrayneg(:,1);
