@@ -5,7 +5,7 @@ close all;
 % Inputs
 %=========================================================================
 eps=1e-10;   % small number
-z0=1;                % center depth (positive)
+z0=0.51;                % center depth (positive)
 P= 12850;                %a value of 500 gives 25MPa for mu=5GPa, for 10 GPa divide value by 10 and result is MPa for 5GPa divide by 20
                       % excess pressure, mu*10^(-5) Pa
 a =0.5;                % major axis, km
@@ -63,7 +63,7 @@ tang_disp = sqrt(ux.^2+(ux').^2); %inserted by jo to quantify horiz displacement
 %=========================================================================
 % Call Comsol data
 %=========================================================================
-alldatarray    = load('benchpipe_depth.txt','-ascii');             % exported data for negative pressure (-645.5Mpa)
+alldatarray    = load('bench_july_2.txt','-ascii');             % exported data for negative pressure (-645.5Mpa)
 alldatarrayneg = load('july_bench_negative.txt','-ascii');   % exported data for positive pressure (645.5Mpa)
 dist           = alldatarray(:,1);
 distneg        = alldatarrayneg(:,1);
@@ -94,31 +94,31 @@ tang_comneg    = ustrainneg*100./(distneg/1000);
 rad_comneg     = diff(ustrainneg*100)./diff((distneg/1000));
 vol_comneg     = (1-2*nu/1-nu)*(tang_comneg(1:100)+rad_comneg);
 
-%hold on
-%plot(dist,ustrain, 'green')
-%plot(x(101,:)*1000, tang_disp(101,:)/100)
+hold on
+plot(dist,ustrain, 'green')
+plot(x(101,101:201)*1000, tang_disp(101,101:201)/100)
 %=========================================================================
 % Plot Volumetric Strain
 %=========================================================================
 
 %plot(dist,volstrain, 'red')
-plot(dist,volstrain, 'green')
-hold on
+%plot(dist,volstrain, 'green')
+%hold on
 %plot(dist(1:100),vol_com/100000, 'cyan')
-plot(x(101,101:200)*1000, vol_yang/100000, 'blue')
-plot(x(101,101:200)*1000, vol_ymogi/100000, 'red')
-plot(x(101,101:200)*1000, vol_yangedit/100000, 'black')
+%plot(x(101,101:200)*1000, vol_yang/100000, 'blue')
+%plot(x(101,101:200)*1000, vol_ymogi/100000, 'red')
+%plot(x(101,101:200)*1000, vol_yangedit/100000, 'black')
 
 % Set Graph Title in fontsize
-title('Volumetric Strain Equation Comparison', 'FontSize', 12, 'FontName', 'Arial');
+title('Displacement Comparison', 'FontSize', 12, 'FontName', 'Arial');
 
 % Set Y Axis
-ylabel('Strain Units(SI)', 'FontSize', 12)
+ylabel('Displacement(meters)', 'FontSize', 12)
 xlabel('Distance (meters)', 'FontSize', 12)
 
 %legend command
-line_1_name = 'Numerical,';
-line_2_name = 'Bonaccorso';
-line_3_name = 'Mogi';
-line_4_name = 'Edited Bonaccorso';
-legend(line_1_name, line_2_name, line_3_name, line_4_name, 'Location','NorthEast')
+line_1_name = 'Numerical';
+line_2_name = 'Yang';
+%line_3_name = 'Mogi';
+%line_4_name = 'Edited Bonaccorso';
+legend(line_1_name, line_2_name, 'Location','NorthEast')
