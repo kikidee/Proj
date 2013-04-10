@@ -1,4 +1,4 @@
-%clear all;
+clear all;
 close all;
 
 %=========================================================================
@@ -16,8 +16,8 @@ theta=pi/180*89.999;  % error in solution for 90 degrees use 89.9 instead for ve
 %=========================================================================
 % Axis Settings
 %=========================================================================
-x_step = .10; % Resolution of X Dimension in KM
-y_step = .10; % Resolution of Y Dimension in KM
+x_step = .01; % Resolution of X Dimension in KM
+y_step = .01; % Resolution of Y Dimension in KM
 x_point_count = 201; % Number of points in X Dimension
 y_point_count = 201; % Number of points in Y Dimenion
 
@@ -95,8 +95,8 @@ rad_comneg     = diff(ustrainneg*100)./diff((distneg/1000));
 vol_comneg     = (1-2*nu/1-nu)*(tang_comneg(1:100)+rad_comneg);
 
 hold on
-plot(dist,ustrain, 'green')
-plot(x(101,101:201)*1000, tang_disp(101,101:201)/100)
+%plot(dist,ustrain, 'green')
+%plot(x(101,101:201)*1000, tang_disp(101,101:201)/100)
 %=========================================================================
 % Plot Volumetric Strain
 %=========================================================================
@@ -104,21 +104,21 @@ plot(x(101,101:201)*1000, tang_disp(101,101:201)/100)
 %plot(dist,volstrain, 'red')
 %plot(dist,volstrain, 'green')
 %hold on
-%plot(dist(1:100),vol_com/100000, 'cyan')
-%plot(x(101,101:200)*1000, vol_yang/100000, 'blue')
+%plot(dist(1:100),vol_com/100000, 'green')
+plot(x(101,101:200), vol_yang, 'blue')
 %plot(x(101,101:200)*1000, vol_ymogi/100000, 'red')
 %plot(x(101,101:200)*1000, vol_yangedit/100000, 'black')
 
 % Set Graph Title in fontsize
-title('Displacement Comparison at -500m', 'FontSize', 12, 'FontName', 'Arial');
+title('Strain', 'FontSize', 12, 'FontName', 'Arial');
 
 % Set Y Axis
-ylabel('Displacement(meters)', 'FontSize', 12)
+ylabel('Strain', 'FontSize', 12)
 xlabel('Distance (meters)', 'FontSize', 12)
 
 %legend command
-line_1_name = 'Numerical';
+%line_1_name = 'Numerical';
 line_2_name = 'Yang';
 %line_3_name = 'Mogi';
 %line_4_name = 'Edited Bonaccorso';
-legend(line_1_name, line_2_name, 'Location','NorthEast')
+legend(line_2_name, 'Location','NorthEast')
