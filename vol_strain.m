@@ -20,7 +20,7 @@ clear all
 close all
 %Inputs
 
-d = 10000;
+d = 5000;
 a = 1000;    
 P = 10e6;
 nu = 0.25;
@@ -71,11 +71,11 @@ source_depth = r/d;
 %------------------------------------
 %Call comsol benchmark data
 
-spherray=load('sphere_bench2.txt', '-ascii');
+spherray=load('sphere_bench.txt', '-ascii');
 dist=spherray(:,1);
-udisp=spherray(:,3);
+udisp=spherray(:,2);
 %wdisp=spherray(:,3);
-volstrain=spherray(:,2);
+volstrain=spherray(:,4);
 tangstrain=udisp./dist;
 radstrain=diff(udisp)./diff(dist);
 vertstrain= (nu/(1-nu))*(tangstrain(1:100)+radstrain);
@@ -89,14 +89,15 @@ figure(1)
 hold on
 plot(r(1:50000),Vol_strain,'r','LineWidth',2)
 for i=1:max(size(volstrain))
-  if (mod(i,2.5) == 0)
+  if (mod(i,4) == 0)
     scatter(dist(i),volstrain(i),60,'g', 'fill')
   end
 end
+plot(dist,volstrain, 'g', 'LineWidth',2)
 
 
 % Set Graph Title in fontsize
-title('Sphere Benchmark at 10km depth', 'FontSize', 12, 'FontName', 'Arial');
+title('Sphere Benchmark at 5km depth', 'FontSize', 12, 'FontName', 'Arial');
 
 % Set Axis
 xlabel('Distance (meters)', 'FontSize', 12, 'FontName', 'Arial')
@@ -113,7 +114,7 @@ grid off
 
 % Set Graph Limits
 %xMin xMax yMin yMax
-axis([-1e4 1e4 -0.5e-7 13e-7])
+axis([-1.e4 1.e4 -2e-7 10.5e-6])
 waitforbuttonpress()
 
 %legend command
@@ -125,6 +126,6 @@ legend(line_1_name, line_2_name, 'Location','NorthEast')
 % at a resolution of 500 dots per inch
 % text is (for commercial print) 300
 % images are 2000
-print(1,'-djpeg','output_sphere_10','-r500')
+print(1,'-djpeg','output_sphere_5','-r500')
 
 
