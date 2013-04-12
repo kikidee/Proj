@@ -16,8 +16,8 @@ theta=pi/180*89.999;  % error in solution for 90 degrees use 89.9 instead for ve
 %=========================================================================
 % Axis Settings
 %=========================================================================
-x_step = .01; % Resolution of X Dimension in KM
-y_step = .01; % Resolution of Y Dimension in KM
+x_step = .1; % Resolution of X Dimension in KM
+y_step = .1; % Resolution of Y Dimension in KM
 x_point_count = 201; % Number of points in X Dimension
 y_point_count = 201; % Number of points in Y Dimenion
 
@@ -46,7 +46,7 @@ c=sqrt(a^2-b^2);
 [Up1,Up2,Up3] = yang(sph,c,z0,x,x',0,[gamma mu nu],[sin(theta) cos(theta)],coeffs,flat_z_dimension);
 [Um1,Um2,Um3] = yang(sph,-c,z0,x,x',0,[gamma mu nu],[sin(theta) cos(theta)],coeffs,flat_z_dimension);
 
-ux = -Up1 + Um1;
+ux = -double(Up1) + double(Um1);
 uz =  Up3 - Um3;
 
 %tang_disp = sqrt(ux.^2+(ux').^2); %inserted by jo to quantify horiz displacement
@@ -64,14 +64,14 @@ tang_disp = sqrt(ux.^2+(ux').^2); %inserted by jo to quantify horiz displacement
 % Call Comsol data
 %=========================================================================
 alldatarray    = load('benchpipe_depth.txt','-ascii');             % exported data for negative pressure (-645.5Mpa)
-alldatarrayneg = load('july_bench_negative.txt','-ascii');   % exported data for positive pressure (645.5Mpa)
+%alldatarrayneg = load('july_bench_negative.txt','-ascii');   % exported data for positive pressure (645.5Mpa)
 dist           = alldatarray(:,1);
-distneg        = alldatarrayneg(:,1);
+%distneg        = alldatarrayneg(:,1);
 ustrain        = alldatarray(:,3);
-ustrainneg     = alldatarrayneg(:,3);
+%ustrainneg     = alldatarrayneg(:,3);
 %wstrain       = alldatarray(:,4);
 volstrain      = alldatarray(:,2);
-volstrainneg   = alldatarrayneg(:,2);
+%volstrainneg   = alldatarrayneg(:,2);
 
 %=========================================================================
 % Establish Strain Equations
@@ -81,22 +81,36 @@ tang_yang      = tang_disp(101,:)./x(101,:);
 %diffvertyang   = diff(uz(101,101:201))./diff(x(101,101:201));       
 rad_yang       = diff(tang_disp(101,101:201))./diff(x(101,101:201));
 vert_yang      = (nu/(1-nu))*(rad_yang+tang_yang(101:200));			% vertical strain from strain components			
-vol_ymogi      = (tang_yang(101:200)+rad_yang+vert_yang);           % mogi equation for volumetric strain
+%vol_ymogi      = (tang_yang(101:200)+rad_yang+vert_yang);           % mogi equation for volumetric strain
 vol_yang       = (1-2*nu/1-nu)*(tang_yang(101:200)+rad_yang);
-vol_yangedit   = (tang_yang(101:200)+rad_yang);					% edited yang equation 
+%vol_yangedit   = (tang_yang(101:200)+rad_yang);					% edited yang equation 
 %plot(x(101,101:199),vol_yang(1:99))
 
 tang_com       = ustrain*100./(dist/1000);
 rad_com        = diff(ustrain*100)./diff((dist/1000));
 vol_com        = (1-2*nu/1-nu)*(tang_com(1:100)+rad_com);
 
-tang_comneg    = ustrainneg*100./(distneg/1000);
-rad_comneg     = diff(ustrainneg*100)./diff((distneg/1000));
-vol_comneg     = (1-2*nu/1-nu)*(tang_comneg(1:100)+rad_comneg);
+%tang_comneg    = ustrainneg*100./(distneg/1000);
+%rad_comneg     = diff(ustrainneg*100)./diff((distneg/1000));
+%vol_comneg     = (1-2*nu/1-nu)*(tang_comneg(1:100)+rad_comneg);
 
+%=========================================================================
+% Plot Displacement and Strain
+%=========================================================================
+plot(x(101,101:201)*1000, tang_disp(101,101:201)/100, 'LineWidth',2)
 hold on
-%plot(dist,ustrain, 'green')
-%plot(x(101,101:201)*1000, tang_disp(101,101:201)/100)
+x_fig = 0;
+y_fig = 0;
+spacing = 0.002;
+for i=1:max(size(ustrain))
+  x_new = dist(i)/max(dist);
+  y_new = ustrain(i)/(2*max(ustrain));
+  if (abs(x_new-x_fig)^2 + abs(y_new-y_fig)^2) > spacing
+    x_fig = x_new;
+	y_fig = y_new;
+    scatter(dist(i),ustrain(i),50,'g', 'fill')
+  end
+end
 %=========================================================================
 % Plot Volumetric Strain
 %=========================================================================
@@ -105,20 +119,29 @@ hold on
 %plot(dist,volstrain, 'green')
 %hold on
 %plot(dist(1:100),vol_com/100000, 'green')
-plot(x(101,101:200), vol_yang, 'blue')
+%plot(x(101,101:200), vol_yang, 'blue')
 %plot(x(101,101:200)*1000, vol_ymogi/100000, 'red')
 %plot(x(101,101:200)*1000, vol_yangedit/100000, 'black')
 
 % Set Graph Title in fontsize
-title('Strain', 'FontSize', 12, 'FontName', 'Arial');
+title('Horizontal Displacement at -10m top depth', 'FontSize', 12, 'FontName', 'Arial');
 
 % Set Y Axis
-ylabel('Strain', 'FontSize', 12)
+ylabel('Displacement (meters)', 'FontSize', 12)
 xlabel('Distance (meters)', 'FontSize', 12)
 
+waitforbuttonpress()
+
 %legend command
-%line_1_name = 'Numerical';
-line_2_name = 'Yang';
+line_1_name = 'Analytical';
+line_2_name = 'Numerical';
 %line_3_name = 'Mogi';
 %line_4_name = 'Edited Bonaccorso';
-legend(line_2_name, 'Location','NorthEast')
+legend(line_1_name,line_2_name, 'Location','NorthEast')
+
+% Save figure 1 to jpeg,called output_pipe_10_deep.jpg
+% at a resolution of 500 dots per inch
+% text is (for commercial print) 300
+% images are 2000
+print(1,'-djpeg','output_pipe_10_deep','-r500')
+
