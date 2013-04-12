@@ -124,7 +124,7 @@ end
 %plot(x(101,101:200)*1000, vol_yangedit/100000, 'black')
 
 % Set Graph Title in fontsize
-title('Horizontal Displacement at -10m top depth', 'FontSize', 12, 'FontName', 'Arial');
+title('Horizontal Displacement at -500m Top Depth', 'FontSize', 12, 'FontName', 'Arial');
 
 % Set Y Axis
 ylabel('Displacement (meters)', 'FontSize', 12)
@@ -143,5 +143,5 @@ legend(line_1_name,line_2_name, 'Location','NorthEast')
 % at a resolution of 500 dots per inch
 % text is (for commercial print) 300
 % images are 2000
-print(1,'-djpeg','output_pipe_10_deep','-r500')
+print(1,'-djpeg','output_pipe_500_deep_hoz','-r500')
 
