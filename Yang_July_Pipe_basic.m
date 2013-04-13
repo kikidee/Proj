@@ -87,7 +87,7 @@ vol_yang       = (1-2*nu/1-nu)*(tang_yang(101:200)+rad_yang);
 %plot(x(101,101:199),vol_yang(1:99))
 
 tang_com       = ustrain./(dist);
-rad_com        = diff(ustrain*100)./diff((dist/1000));
+rad_com        = diff(ustrain)./diff((dist));
 vol_com        = (1-2*nu/1-nu)*(tang_com(1:100)+rad_com);
 
 %tang_comneg    = ustrainneg*100./(distneg/1000);
@@ -97,18 +97,18 @@ vol_com        = (1-2*nu/1-nu)*(tang_com(1:100)+rad_com);
 %=========================================================================
 % Plot Displacement and Strain
 %=========================================================================
-plot(x(101,101:201)*1000, tang_yang(101:201)/100000, 'LineWidth',2)
+plot(x(101,101:200)*1000, rad_yang/100000, 'LineWidth',2)
 hold on
 x_fig = 0;
 y_fig = 0;
-spacing = 0.002;
-for i=1:max(size(tang_com))
+spacing = 0.001;
+for i=1:max(size(rad_com))
   x_new = dist(i)/max(dist);
-  y_new = tang_com(i)/(2*max(tang_com));
+  y_new = rad_com(i)/(2*max(rad_com));
   if (abs(x_new-x_fig)^2 + abs(y_new-y_fig)^2) > spacing
     x_fig = x_new;
 	y_fig = y_new;
-    scatter(dist(i),tang_com(i),50,'g', 'fill')
+    scatter(dist(i),rad_com(i),50,'g', 'fill')
   end
 end
 %=========================================================================
@@ -124,7 +124,7 @@ end
 %plot(x(101,101:200)*1000, vol_yangedit/100000, 'black')
 
 % Set Graph Title in fontsize
-title('Tangential Strain at -500m Top Depth', 'FontSize', 12, 'FontName', 'Arial');
+title('Radial Strain at -500m Top Depth', 'FontSize', 12, 'FontName', 'Arial');
 
 % Set Y Axis
 ylabel('Strain (strain units)', 'FontSize', 12)
@@ -143,5 +143,5 @@ legend(line_1_name,line_2_name, 'Location','NorthEast')
 % at a resolution of 500 dots per inch
 % text is (for commercial print) 300
 % images are 2000
-print(1,'-djpeg','output_pipe_500_deep_tang','-r500')
+print(1,'-djpeg','output_pipe_500_deep_rad','-r500')
 
