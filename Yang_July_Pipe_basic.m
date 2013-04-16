@@ -104,7 +104,7 @@ vol_yang       = (1-2*nu/1-nu)*(tang_yang(101:200)+rad_yang);		% volumetric stra
 
 tang_com       = ustrain./(dist);									% tangential strain equation from Mogi Model
 rad_com        = diff(ustrain)./diff((dist));						% radial strain equation from Mogi Model
-vol_com        = (1-2*nu/1-nu)*(tang_com(1:200)+rad_com);			% volumetric strain equation from Bonaccorso Model
+vol_com        = ((1-2*nu)/(1-nu))*(tang_com(1:200)+rad_com);			% volumetric strain equation from Bonaccorso Model
 
 %tang_comneg    = ustrainneg*100./(distneg/1000);
 %rad_comneg     = diff(ustrainneg*100)./diff((distneg/1000));
@@ -114,7 +114,7 @@ vol_com        = (1-2*nu/1-nu)*(tang_com(1:200)+rad_com);			% volumetric strain 
 % Plot Displacement and Strain
 %===================================================================================================================
 
-plot(x(101,101:201)*1000, uz(101,101:201)/100, 'LineWidth',2)
+plot(x(101,101:200)*1000, vol_yang/100, 'LineWidth',2)
 hold on
 %x_fig = 0;
 %y_fig = 0;
@@ -134,7 +134,7 @@ hold on
 
 
 %plot(dist,volstrain, 'red')
-plot(dist,wstrain, 'green')
+plot(dist,volstrain, 'green')
 %hold on
 %plot(dist(1:200),vol_com, 'red')
 %plot(x(101,101:200), vol_yang, 'blue')
