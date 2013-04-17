@@ -74,7 +74,7 @@ source_depth = r/d;
 spherray=load('sphere_bench_5000m.txt', '-ascii');
 dist=spherray(:,1);
 udisp=spherray(:,3);
-%wdisp=spherray(:,3);
+wdisp=spherray(:,4);
 volstrain=spherray(:,2);
 tangstrain=udisp./dist;
 radstrain=diff(udisp)./diff(dist);
@@ -87,26 +87,26 @@ radstrain=diff(udisp)./diff(dist);
 
 figure(1)
 hold on
-plot(r,ur,'r','LineWidth',2)
+plot(r,uz,'r','LineWidth',2)
 
 x_fig = 0;
 y_fig = 0;
 spacing = 0.008;
-for i=1:max(size(udisp))
+for i=1:max(size(wdisp))
   x_new = dist(i)/max(dist);
-  y_new = udisp(i)/(1*max(udisp));
+  y_new = wdisp(i)/(1*max(wdisp));
   if (abs(x_new-x_fig)^2 + abs(y_new-y_fig)^2) > spacing
     x_fig = x_new;
 y_fig = y_new;
-    scatter(dist(i),udisp(i),50,'g', 'fill')
+    scatter(dist(i),wdisp(i),50,'g', 'fill')
   end
 end
 
-plot(dist,udisp, 'g', 'LineWidth',2)
+plot(dist,wdisp, 'g', 'LineWidth',2)
 
 
 % Set Graph Title in fontsize
-title('Sphere Benchmark for Horizontal Displacement at 5km depth', 'FontSize', 10, 'FontName', 'Arial');
+title('Sphere Benchmark for Vertical Displacement at 5km depth', 'FontSize', 10, 'FontName', 'Arial');
 
 % Set Axis
 xlabel('Distance (metres)', 'FontSize', 10, 'FontName', 'Arial')
@@ -123,17 +123,17 @@ grid off
 
 % Set Graph Limits
 %xMin xMax yMin yMax
-axis([-1.e4 1.e4 -0.015 0.015])
+%axis([-1.e4 1.e4 -0.015 0.015])
 waitforbuttonpress()
 
 %legend command
 line_1_name = 'Analytical Model';
 line_2_name = 'Numerical Model';
-legend(line_1_name, line_2_name, 'Location','NorthEast')
+legend(line_1_name, line_2_name, 'Location','NorthWest')
 
 % Save figure 1 to jpeg,called output_test.jpg
 % at a resolution of 500 dots per inch
 % text is (for commercial print) 300
 % images are 2000
-print(1,'-djpeg','output_sphere_5_hozdisp','-r500')
+print(1,'-djpeg','output_sphere_5_vertdisp','-r500')
 
