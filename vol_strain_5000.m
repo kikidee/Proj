@@ -87,35 +87,29 @@ radstrain=diff(udisp)./diff(dist);
 
 figure(1)
 hold on
-plot(r(1:50000),Rstrain,'r','LineWidth',2)
+plot(r,Tstrain,'r','LineWidth',2)
 
 x_fig = 0;
 y_fig = 0;
 spacing = 0.008;
-for i=1:max(size(radstrain))
+for i=1:max(size(tangstrain))
   x_new = dist(i)/max(dist);
-  y_new = radstrain(i)/(1*max(radstrain));
+  y_new = tangstrain(i)/(1*max(tangstrain));
   if (abs(x_new-x_fig)^2 + abs(y_new-y_fig)^2) > spacing
     x_fig = x_new;
 y_fig = y_new;
-    scatter(dist(i),radstrain(i),50,'g', 'fill')
+    scatter(dist(i),tangstrain(i),50,'g', 'fill')
   end
 end
 
-%plot(dist,volstrain,'g','LineWidth',2)
-%for i=1:max(size(volstrain))
-%  if (mod(i,4) == 0)
-%    scatter(dist(i),volstrain(i),60,'g', 'fill')
-%  end
-%end
-plot(dist(1:2500),radstrain, 'g', 'LineWidth',2)
+plot(dist,tangstrain, 'g', 'LineWidth',2)
 
 
 % Set Graph Title in fontsize
-title('Sphere Benchmark for Radial Strain at 5km depth', 'FontSize', 10, 'FontName', 'Arial');
+title('Sphere Benchmark for Tangential Strain at 5km depth', 'FontSize', 10, 'FontName', 'Arial');
 
 % Set Axis
-xlabel('Distance (meters)', 'FontSize', 10, 'FontName', 'Arial')
+xlabel('Distance (metres)', 'FontSize', 10, 'FontName', 'Arial')
 ylabel('Strain (strain units)', 'FontSize', 10)
 
 % Set Graph Background Color
@@ -129,7 +123,7 @@ grid off
 
 % Set Graph Limits
 %xMin xMax yMin yMax
-axis([-1.e4 1.e4 -2e-6 8e-6])
+axis([-1.e4 1.e4 0 8e-6])
 waitforbuttonpress()
 
 %legend command
@@ -141,5 +135,5 @@ legend(line_1_name, line_2_name, 'Location','NorthEast')
 % at a resolution of 500 dots per inch
 % text is (for commercial print) 300
 % images are 2000
-print(1,'-djpeg','output_sphere_5_radial','-r500')
+print(1,'-djpeg','output_sphere_5_tang','-r500')
 
