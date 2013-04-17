@@ -98,29 +98,29 @@ radstrain=diff(udisp)./diff(dist);
 
 figure(1)
 hold on
-plot(r(1:50000),Rstrain,'r','LineWidth',2)
+plot(r(1:50000),Vol_strain,'r','LineWidth',2)
 
 x_fig = 0;
 y_fig = 0;
 spacing = 0.008;
-for i=1:max(size(radstrain))
+for i=1:max(size(volstrain))
   x_new = dist(i)/max(dist);
-  y_new = radstrain(i)/(1*max(radstrain));
+  y_new = volstrain(i)/(1*max(volstrain));
   if (abs(x_new-x_fig)^2 + abs(y_new-y_fig)^2) > spacing
     x_fig = x_new;
 y_fig = y_new;
-    scatter(dist(i),radstrain(i),50,'g', 'fill')
+    scatter(dist(i),volstrain(i),50,'g', 'fill')
   end
 end
 
-plot(dist(1:2500),radstrain,'g','LineWidth',2)
+plot(dist,volstrain,'g','LineWidth',2)
 
 %-----------------------------------------------------------------------
 %Tidy Graphs
 %-----------------------------------------------------------------------
 
 % Set Graph Title in fontsize
-title('Sphere Benchmark for Radial Strain at 10km depth', 'FontSize', 10, 'FontName', 'Arial');
+title('Sphere Benchmark for Volumetric Strain at 10km depth', 'FontSize', 10, 'FontName', 'Arial');
 
 % Set Axis
 xlabel('Distance (metres)', 'FontSize', 10, 'FontName', 'Arial')
@@ -153,7 +153,7 @@ legend(line_1_name, line_2_name, 'Location','NorthEast')
 % at a resolution of 500 dots per inch
 % text is (for commercial print) 300
 % images are 2000
-print(1,'-djpeg','output_sphere_10_rad','-r500')
+print(1,'-djpeg','output_sphere_10_vol','-r500')
 
 %-----------------------------------------------------------------------
 
